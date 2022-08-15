@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!-- 之所以我们需要添加一个mybaits的总体配置文件，目的是为了以后配置一些mybaits的插件 比如说分页插件 -->
+
+</configuration>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd">
+    <!-- 需要在配置文件的头中开启tx的命名空间 -->
+    <!-- 先配置基于dataSource的事务管理器的切面(AOP)-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <!-- 该切面需要一个datasource -->
+        <property name="dataSource">
+            <ref bean="dataSource"/>
+        </property>
+    </bean>
+    <!-- 配置事物传播行为以及事物隔离级别 -->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <!--
+            name:需要参与到事物控制中的方法名。可以使用*来通配
+            propagation:事物的传播行为。REQUIRED 必须要运行在一个事务中
+            isolation:事物的隔离级别 。DEFAULT以数据默认的隔离级别为主。
+            read-only:只读事物。只读并不会做事物提交与回滚。他会优化查询执行的效率。所以如果不是DML操作。建议都需要拥有只读事物
+             -->
+            <tx:method name="add*" propagation="REQUIRED" isolation="DEFAULT"/>
+            <tx:method name="drop*" propagation="REQUIRED"/>
+            <tx:method name="modify*" propagation="REQUIRED"/>
+            <tx:method name="update*" propagation="REQUIRED"/>
+            <tx:method name="*" read-only="true"/>
+        </tx:attributes>
+    </tx:advice>
+    <!-- 配置切点 -->
+    <aop:config>
+        <aop:pointcut expression="execution(* com.wangke.service.impl.*.*(..))" id="mypointcut"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="mypointcut"/>
+    </aop:config>
+</beans>

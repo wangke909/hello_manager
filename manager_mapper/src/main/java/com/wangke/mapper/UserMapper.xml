@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wangke.mapper.UserMapper">
+    <!--添加用户-->
+    <insert id="insertUser" parameterType="com.wangke.pojo.User">
+        insert into user(userName,userAge) values (#{userName},#{userAge})
+    </insert>
+
+    <!--修改用户-->
+    <update id="updateUser" parameterType="com.wangke.pojo.User">
+        update user set userName = #{userName},userAge = #{userAge} where userId = #{userId}
+    </update>
+
+    <!--删除用户-->
+    <delete id="deleteUserById" parameterType="java.lang.Integer">
+        delete from user where userId = #{userId}
+    </delete>
+
+    <select id="selectAllUser" resultType="com.wangke.pojo.User">
+        select * from user
+    </select>
+</mapper>
